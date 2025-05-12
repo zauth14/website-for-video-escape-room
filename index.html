@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Video Escape Room</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: black;
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    video {
+      width: 80%;
+      max-height: 500px;
+      margin-bottom: 20px;
+      pointer-events: none; 
+    }
+
+    #codeInputSection {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 18px;
+      width: 200px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    #muteButton {
+      margin-top: 10px;
+    }
+
+    #errorMessage {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Escape Room Challenge</h1>
+
+  <video id="videoPlayer" autoplay loop muted playsinline></video>
+  <br />
+  <button id="muteButton" onclick="toggleMute()">🔇 Mute</button>
+
+  <div id="codeInputSection">
+    <p>Enter the code to continue:</p>
+    <input type="text" id="codeInput" />
+    <button onclick="checkCode()">Submit</button>
+    <div id="errorMessage"></div>
+  </div>
+
+  <script>
+    const videoPlayer = document.getElementById('videoPlayer');
+    const muteButton = document.getElementById('muteButton');
+    const codeInputSection = document.getElementById('codeInputSection');
+    const errorMessage = document.getElementById('errorMessage');
+    const codeInput = document.getElementById('codeInput');
+
+    const videoPaths = [
+      'videos/video1.mp4',
+      'videos/video2.mp4',
+      'videos/video3.mp4',
+      'videos/video4.mp4',
+      'videos/video5.mp4',
+      'videos/video6.mp4',
+      'videos/video7.mp4',
+      'videos/video8.mp4',
+      'videos/video9.mp4',
+      'videos/video10.mp4',
+    ];
+
+    const videoCodes = new Set([
+      'alpha',
+      'bravo',
+      'charlie',
+      'delta',
+      'echo',
+      'foxtrot',
+      'golf',
+      'hotel',
+      'india',
+      'juliet',
+    ]);
+
+    let usedCodes = new Set();
+    let currentIndex = 0;
+
+    function loadVideo(index) {
+      videoPlayer.src = videoPaths[index];
+      videoPlayer.load();
+      errorMessage.textContent = '';
+      codeInput.value = '';
+      videoPlayer.play();
+    }
+
+    function checkCode() {
+      const enteredCode = codeInput.value.trim().toLowerCase();
+
+      if (!videoCodes.has(enteredCode)) {
+        errorMessage.textContent = 'Invalid code. Try again.';
+      } else if (usedCodes.has(enteredCode)) {
+        errorMessage.textContent = 'That code has already been used. Try another one.';
+      } else {
+        usedCodes.add(enteredCode);
+        currentIndex++;
+        if (currentIndex < videoPaths.length) {
+          loadVideo(currentIndex);
+        } else {
+          codeInputSection.innerHTML = "<h2>Congratulations! You've escaped!</h2>";
+          videoPlayer.style.display = 'none';
+          muteButton.style.display = 'none';
+        }
+      }
+    }
+
+    function toggleMute() {
+      videoPlayer.muted = !videoPlayer.muted;
+      muteButton.textContent = videoPlayer.muted ? '🔇 Mute' : '🔊 Unmute';
+    }
+
+    loadVideo(currentIndex);
+  </script>
+
+</body>
+</html>
