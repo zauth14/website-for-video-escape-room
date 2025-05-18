@@ -120,9 +120,40 @@
         if (currentIndex < videoPaths.length) {
           loadVideo(currentIndex);
         } else {
-          codeInputSection.innerHTML = "<h2>Congratulations! You've escaped!</h2>";
+          codeInputSection.innerHTML = `
+            <h2>Congratulations! You've escaped!</h2>
+            <div id="questionnaire">
+              <h3>Final Challenge: Answer these questions</h3>
+              <form id="questionnaireForm">
+                <p>1. What was your favorite part of the escape room?</p>
+                <input type="text" name="q1" required /><br /><br />
+                
+                <p>2. How difficult did you find the puzzles? (1-5)</p>
+                <input type="number" name="q2" min="1" max="5" required /><br /><br />
+                
+                <p>3. Would you recommend this game to others? Why or why not?</p>
+                <input type="text" name="q3" required /><br /><br />
+
+                <button type="submit">Submit Answers</button>
+              </form>
+            </div>
+          `;
+
           videoPlayer.style.display = 'none';
           muteButton.style.display = 'none';
+
+          document.getElementById('questionnaireForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const answers = {
+              q1: formData.get('q1'),
+              q2: formData.get('q2'),
+              q3: formData.get('q3')
+            };
+            console.log("User responses:", answers);
+            codeInputSection.innerHTML = "<h2>Thanks for completing the challenge and the questionnaire!</h2>";
+          });
+
         }
       }
     }
