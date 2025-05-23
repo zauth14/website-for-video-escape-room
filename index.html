@@ -5,37 +5,53 @@
   <title>Video Escape Room</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: black;
-      color: white;
+      font-family: 'Courier New', Courier, monospace;
+      background: linear-gradient(to bottom right, #0a0a0a, #1a1a1a);
+      color: #e0e0e0;
       text-align: center;
       margin: 0;
       padding: 20px;
+    }
+
+    h1 {
+      font-weight: 400;
+      letter-spacing: 2px;
+      color: #00ffcc;
+      text-shadow: 0 0 5px #00ffcc;
     }
 
     video {
       width: 80%;
       max-height: 500px;
       margin-bottom: 20px;
-      pointer-events: none; 
+      border: 2px solid #00ffcc;
+      pointer-events: none;
     }
 
-    #codeInputSection {
-      display: block;
-      margin-top: 10px;
-    }
-
-    input[type="text"] {
+    input[type="text"],
+    input[type="number"] {
       padding: 10px;
       font-size: 18px;
-      width: 200px;
+      width: 240px;
+      border: 1px solid #00ffcc;
+      background: #111;
+      color: #00ffcc;
+      margin-bottom: 10px;
     }
 
     button {
       padding: 10px 20px;
       font-size: 18px;
-      margin-left: 10px;
       cursor: pointer;
+      background-color: #111;
+      color: #00ffcc;
+      border: 1px solid #00ffcc;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #00ffcc;
+      color: #000;
     }
 
     #muteButton {
@@ -84,16 +100,8 @@
     ];
 
     const videoCodes = new Set([
-      'alpha',
-      'bravo',
-      'charlie',
-      'delta',
-      'echo',
-      'foxtrot',
-      'golf',
-      'hotel',
-      'india',
-      'juliet',
+      'alpha', 'bravo', 'charlie', 'delta', 'echo',
+      'foxtrot', 'golf', 'hotel', 'india', 'juliet'
     ]);
 
     let usedCodes = new Set();
@@ -121,17 +129,17 @@
           loadVideo(currentIndex);
         } else {
           codeInputSection.innerHTML = `
-            <h2>Congratulations! You've escaped!</h2>
+            <h2>Congratulations! You've escaped.</h2>
             <div id="questionnaire">
               <h3>Final Challenge: Answer these questions</h3>
               <form id="questionnaireForm">
-                <p>1. What was your favorite part of the escape room?</p>
-                <input type="text" name="q1" required /><br /><br />
-                
-                <p>2. How difficult did you find the puzzles? (1-5)</p>
-                <input type="number" name="q2" min="1" max="5" required /><br /><br />
-                
-                <p>3. Would you recommend this game to others? Why or why not?</p>
+                <p>1. What are the three things 'A Heist Agency' exists for?</p>
+                <input type="text" name="q1" required /><br />
+
+                <p>2. What is the only code we need to abide by (1–5)</p>
+                <input type="text" name="q2" required /><br />
+
+                <p>3. What do we think 'legal' is? A bunch of...? </p>
                 <input type="text" name="q3" required /><br /><br />
 
                 <button type="submit">Submit Answers</button>
@@ -151,11 +159,15 @@
               q3: formData.get('q3')
             };
             console.log("User responses:", answers);
-            codeInputSection.innerHTML = "<h2>Thanks for completing the challenge and the questionnaire!</h2>";
-          });
 
+            codeInputSection.innerHTML = `
+              <h2>Transmission Complete</h2>
+              <p>Your answers have been recorded.</p>
+              <p>🕵️ To receive your next mission, call: <strong style="color:#00ffcc;">+1 (650)-509-8388</strong></p>
+              <p>This line will self-destruct in 10 seconds. Just kidding. But seriously, call the number.</p>
+            `;
+          });
         }
-        
       }
     }
 
